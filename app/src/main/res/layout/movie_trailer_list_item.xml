@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/trailers_ll_margin_top"
+        android:layout_marginBottom="@dimen/trailers_ll_margin_bottom"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:id="@+id/play_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_play_arrow_white_18dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:contentDescription="@string/play_icon" />
+
+        <TextView
+            android:id="@+id/trailer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="sans-serif"
+            android:textSize="@dimen/trailer_title_text_size"
+            android:layout_marginStart="@dimen/trailer_title_margin_start"
+            android:layout_marginEnd="@dimen/trailer_title_margin_end" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@android:color/white"
+            android:layout_marginStart="@dimen/trailer_divider_margin_start"
+            android:layout_marginEnd="@dimen/trailer_divider_margin_end" />
+    </LinearLayout>
+
+</FrameLayout>

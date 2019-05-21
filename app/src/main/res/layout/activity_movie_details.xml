@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.parrish.android.portfolio.activities.movie.details.MovieDetailsActivity">
+
+    <TextView
+        android:id="@+id/movie_details_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/movie_header_selector"
+        android:padding="@dimen/mv_details_title_padding"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textSize="@dimen/mv_details_title_text_size"
+        android:singleLine="false"
+        android:minHeight="@dimen/mv_details_title_min_height"
+        android:elevation="@dimen/mv_details_title_elevation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Lord of the Rings"/>
+
+    <ImageView
+        android:id="@+id/movie_thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/mv_thumbnail_margin_start"
+        android:layout_marginEnd="@dimen/mv_thumbnail_margin_end"
+        android:layout_marginTop="@dimen/mv_thumbnail_margin_top"
+        android:layout_marginBottom="@dimen/mv_thumbnail_margin_bottom"
+        android:elevation="@dimen/mv_thumbnail_elevation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_details_title"
+        android:contentDescription="@string/movie_thumbnail" />
+
+    <TextView
+        android:id="@+id/movie_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mv_year_margin_top"
+        android:fontFamily="sans-serif"
+        android:textSize="@dimen/mv_year_text_size"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_details_title"/>
+
+    <TextView
+        android:id="@+id/movie_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        app:layout_constraintStart_toStartOf="@+id/movie_year"
+        app:layout_constraintTop_toBottomOf="@+id/movie_year"/>
+
+    <TextView
+        android:id="@+id/movie_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textSize="@dimen/mv_rating_text_size"
+        app:layout_constraintStart_toStartOf="@+id/movie_year"
+        app:layout_constraintTop_toBottomOf="@+id/movie_duration"/>
+
+    <Button
+        android:id="@+id/movie_favorite_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mark_movie_favorite"
+        android:gravity="center|center_horizontal"
+        android:fontFamily="sans-serif"
+        android:textSize="@dimen/fav_button_text_size"
+        android:minHeight="@dimen/fav_button_min_height"
+        android:minWidth="@dimen/fav_button_min_width"
+        android:foregroundGravity="left"
+        android:elevation="@dimen/fav_button_elevation"
+        android:layout_marginTop="@dimen/fav_button_margin_top"
+        android:background="@drawable/button_bg_rounded_corners"
+        app:layout_constraintStart_toStartOf="@+id/movie_year"
+        app:layout_constraintTop_toBottomOf="@+id/movie_rating"/>
+
+    <TextView
+        android:id="@+id/movie_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="@dimen/mv_description_text_size"
+        android:layout_marginTop="@dimen/mv_description_margin_top"
+        android:layout_marginStart="@dimen/mv_description_margin_start"
+        android:layout_marginEnd="@dimen/mv_description_margin_start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_thumbnail"/>
+
+    <TextView
+        android:id="@+id/trailers_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/trailers_tv_margin_start"
+        android:layout_marginEnd="@dimen/trailers_tv_margin_end"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textSize="@dimen/trailer_tv_text_size"
+        android:layout_marginTop="@dimen/trailers_tv_margin_top"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_description"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/trailers_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/rv_margin_start"
+        android:layout_marginEnd="@dimen/rv_margin_end"
+        android:layout_marginTop="@dimen/rv_margin_top"
+        android:layout_marginBottom="@dimen/rv_margin_bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trailers_tv">
+    </android.support.v7.widget.RecyclerView>
+
+</android.support.constraint.ConstraintLayout>
