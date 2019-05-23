@@ -1,6 +1,9 @@
 package com.parrish.android.portfolio.activities.movie.details;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -134,6 +137,8 @@ public class MovieDetailsActivity extends AppCompatActivity
             movieDescription.setText(result.getOverview());
             trailersTextView.setText(getString(R.string.trailers));
 
+            //TODO: Here I need to get the movie id and check to see it if exist in the favorite table.
+            //      Then set resource and tag accordingly
             movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_border_black_24dp);
             movieFavoriteImageView.setTag(R.drawable.ic_favorite_border_black_24dp);
 
@@ -194,7 +199,18 @@ public class MovieDetailsActivity extends AppCompatActivity
 
     @Override
     public void onTrailerClickListener(com.parrish.android.portfolio.models.movie.details.Result result) {
-        Log.i(TAG, "MOVIE ==> " + result.getName() + " was clicked!!!");
+        watchYoutubeVideo(getBaseContext(), result.getKey());
+    }
+
+    public static void watchYoutubeVideo(Context context, String id){
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + id));
+        try {
+            context.startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            context.startActivity(webIntent);
+        }
     }
 
     private void setupRecyclerView() {
@@ -281,7 +297,7 @@ public class MovieDetailsActivity extends AppCompatActivity
 
                 @Override
                 public void onComplete() {
-                    String sb = String.valueOf(runTime) +
+                    String sb = runTime +
                             "min ";
                     movieDuration.setText(sb);
                 }
@@ -289,7 +305,7 @@ public class MovieDetailsActivity extends AppCompatActivity
     }
 
     private String getVoteAverage(Double voteAverage) {
-        return String.valueOf(voteAverage) +
+        return voteAverage +
                 "/" +
                 10;
     }
