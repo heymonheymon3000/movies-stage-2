@@ -16,9 +16,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.squareup.picasso.Callback;
 
 import com.parrish.android.portfolio.BuildConfig;
+import com.squareup.picasso.Callback;
+
 import com.parrish.android.portfolio.adaptors.movie.details.MovieTrailersAdaptor;
 import com.parrish.android.portfolio.helpers.Helper;
 import com.parrish.android.portfolio.interfaces.MovieService;
@@ -59,8 +60,8 @@ public class MovieDetailsActivity extends AppCompatActivity
     @BindView(R.id.movie_rating)
     public TextView movieRating;
 
-    @BindView(R.id.movie_favorite_button)
-    public TextView movieFavoriteButton;
+    @BindView(R.id.movie_favorite_image_view)
+    public ImageView movieFavoriteImageView;
 
     @BindView(R.id.movie_description)
     public TextView movieDescription;
@@ -132,6 +133,19 @@ public class MovieDetailsActivity extends AppCompatActivity
             movieRating.setText(getVoteAverage(result.getVoteAverage()));
             movieDescription.setText(result.getOverview());
             trailersTextView.setText(getString(R.string.trailers));
+
+            movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+            movieFavoriteImageView.setTag(R.drawable.ic_favorite_border_black_24dp);
+
+            movieFavoriteImageView.setOnClickListener(v -> {
+                if((int)((movieFavoriteImageView.getTag())) == R.drawable.ic_favorite_border_black_24dp) {
+                    movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    movieFavoriteImageView.setTag(R.drawable.ic_favorite_black_24dp);
+                } else {
+                    movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    movieFavoriteImageView.setTag(R.drawable.ic_favorite_border_black_24dp);
+                }
+            });
             setupRecyclerView();
 
             if(savedInstanceState == null || !savedInstanceState.containsKey(RESULT_CACHE_KEY)) {

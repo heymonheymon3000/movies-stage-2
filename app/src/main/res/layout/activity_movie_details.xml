@@ -65,20 +65,31 @@
         app:layout_constraintStart_toStartOf="@+id/movie_year"
         app:layout_constraintTop_toBottomOf="@+id/movie_duration"/>
 
-    <Button
-        android:id="@+id/movie_favorite_button"
+    <!--<Button-->
+        <!--android:id="@+id/movie_favorite_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/mark_movie_favorite"-->
+        <!--android:gravity="center|center_horizontal"-->
+        <!--android:fontFamily="sans-serif"-->
+        <!--android:textSize="@dimen/fav_button_text_size"-->
+        <!--android:minHeight="@dimen/fav_button_min_height"-->
+        <!--android:minWidth="@dimen/fav_button_min_width"-->
+        <!--android:foregroundGravity="left"-->
+        <!--android:elevation="@dimen/fav_button_elevation"-->
+        <!--android:layout_marginTop="@dimen/fav_button_margin_top"-->
+        <!--android:background="@drawable/button_bg_rounded_corners"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/movie_year"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/movie_rating"/>-->
+
+    <ImageView
+        android:id="@+id/movie_favorite_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/mark_movie_favorite"
         android:gravity="center|center_horizontal"
-        android:fontFamily="sans-serif"
-        android:textSize="@dimen/fav_button_text_size"
-        android:minHeight="@dimen/fav_button_min_height"
-        android:minWidth="@dimen/fav_button_min_width"
-        android:foregroundGravity="left"
         android:elevation="@dimen/fav_button_elevation"
         android:layout_marginTop="@dimen/fav_button_margin_top"
-        android:background="@drawable/button_bg_rounded_corners"
+        app:srcCompat="@drawable/ic_favorite_black_24dp"
         app:layout_constraintStart_toStartOf="@+id/movie_year"
         app:layout_constraintTop_toBottomOf="@+id/movie_rating"/>
 
