@@ -3,6 +3,7 @@ package com.parrish.android.portfolio.interfaces;
 import com.parrish.android.portfolio.models.movie.MovieResponse;
 import com.parrish.android.portfolio.models.movie.details.MovieDetailsResponse;
 import com.parrish.android.portfolio.models.movie.details.MovieVideoResponse;
+import com.parrish.android.portfolio.models.movie.reviews.MovieReviewResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -18,4 +19,7 @@ public interface MovieService {
 
     @GET("{id}/videos")
     Observable<MovieVideoResponse> getMovieTrailers(@Path("id") Integer id, @Query("api_key") String api_key);
+
+    @GET("{id}/reviews")
+    Observable<MovieReviewResponse> getMovieReviews(@Path("id") Integer id, @Query("api_key") String api_key);
 }

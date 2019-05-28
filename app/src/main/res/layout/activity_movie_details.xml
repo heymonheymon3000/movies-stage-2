@@ -65,29 +65,13 @@
         app:layout_constraintStart_toStartOf="@+id/movie_year"
         app:layout_constraintTop_toBottomOf="@+id/movie_duration"/>
 
-    <!--<Button-->
-        <!--android:id="@+id/movie_favorite_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/mark_movie_favorite"-->
-        <!--android:gravity="center|center_horizontal"-->
-        <!--android:fontFamily="sans-serif"-->
-        <!--android:textSize="@dimen/fav_button_text_size"-->
-        <!--android:minHeight="@dimen/fav_button_min_height"-->
-        <!--android:minWidth="@dimen/fav_button_min_width"-->
-        <!--android:foregroundGravity="left"-->
-        <!--android:elevation="@dimen/fav_button_elevation"-->
-        <!--android:layout_marginTop="@dimen/fav_button_margin_top"-->
-        <!--android:background="@drawable/button_bg_rounded_corners"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/movie_year"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/movie_rating"/>-->
-
     <ImageView
         android:id="@+id/movie_favorite_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center|center_horizontal"
         android:elevation="@dimen/fav_button_elevation"
+        android:foregroundGravity="left"
         android:layout_marginTop="@dimen/fav_button_margin_top"
         app:srcCompat="@drawable/ic_favorite_black_24dp"
         app:layout_constraintStart_toStartOf="@+id/movie_year"
@@ -105,29 +89,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movie_thumbnail"/>
 
-    <TextView
-        android:id="@+id/trailers_tv"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/trailers_tv_margin_start"
         android:layout_marginEnd="@dimen/trailers_tv_margin_end"
-        android:fontFamily="sans-serif"
-        android:textStyle="bold"
-        android:textSize="@dimen/trailer_tv_text_size"
+        app:tabGravity="fill"
+        app:tabMode="scrollable"
         android:layout_marginTop="@dimen/trailers_tv_margin_top"
+        style="@style/AppTheme.TabStyle"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movie_description"/>
+        app:layout_constraintTop_toBottomOf="@+id/movie_description">
+    </android.support.design.widget.TabLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/trailers_rv"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/rv_margin_start"
-        android:layout_marginEnd="@dimen/rv_margin_end"
-        android:layout_marginTop="@dimen/rv_margin_top"
-        android:layout_marginBottom="@dimen/rv_margin_bottom"
+        android:background="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trailers_tv">
-    </android.support.v7.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+    </android.support.v4.view.ViewPager>
 
 </android.support.constraint.ConstraintLayout>

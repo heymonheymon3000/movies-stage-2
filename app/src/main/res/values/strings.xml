@@ -5,7 +5,8 @@
 
     <!--movieDetailsActivity.xml-->
     <string name="mark_movie_favorite">MARK AS\nFAVORITE</string>
-    <string name="trailers">Trailers:</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
     <string name="trailer">Trailer</string>
     <string name="movie_details">Movie Details</string>
     <string name="play_icon">Play icon</string>

@@ -1,16 +1,12 @@
 package com.parrish.android.portfolio.activities.movie.details;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -21,20 +17,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parrish.android.portfolio.BuildConfig;
+import com.parrish.android.portfolio.adaptors.movie.details.TabAdapter;
+import com.parrish.android.portfolio.fragments.movie.detail.ReviewFragment;
+import com.parrish.android.portfolio.fragments.movie.detail.TrailerFragment;
 import com.squareup.picasso.Callback;
 
-import com.parrish.android.portfolio.adaptors.movie.details.MovieTrailersAdaptor;
 import com.parrish.android.portfolio.helpers.Helper;
 import com.parrish.android.portfolio.interfaces.MovieService;
 import com.parrish.android.portfolio.models.movie.details.MovieDetailsResponse;
 import com.parrish.android.portfolio.models.movie.Result;
 import com.parrish.android.portfolio.R;
-import com.parrish.android.portfolio.models.movie.details.MovieVideoResponse;
 import com.parrish.android.portfolio.network.ApiUtils;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,8 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MovieDetailsActivity extends AppCompatActivity
-        implements MovieTrailersAdaptor.TrailerClickListener {
+public class MovieDetailsActivity extends AppCompatActivity {
 
     private final String TAG = MovieDetailsActivity.class.getSimpleName();
 
@@ -69,15 +62,15 @@ public class MovieDetailsActivity extends AppCompatActivity
     @BindView(R.id.movie_description)
     public TextView movieDescription;
 
-    @BindView(R.id.trailers_tv)
-    public TextView trailersTextView;
+    @BindView(R.id.tabLayout)
+    public TabLayout tabLayout;
 
-    @BindView(R.id.trailers_rv)
-    public RecyclerView recyclerView;
+    @BindView(R.id.viewPager)
+    public ViewPager viewPager;
 
-    private MovieTrailersAdaptor movieTrailersAdaptor;
+    private TabAdapter adapter;
 
-    private final static String RESULT_CACHE_KEY = "RESULT_CACHE_KEY";
+    public final static String RESULT_CACHE_KEY = "RESULT_CACHE_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +128,23 @@ public class MovieDetailsActivity extends AppCompatActivity
             setMovieDuration(result.getId());
             movieRating.setText(getVoteAverage(result.getVoteAverage()));
             movieDescription.setText(result.getOverview());
-            trailersTextView.setText(getString(R.string.trailers));
+
+            adapter = new TabAdapter(getSupportFragmentManager());
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(RESULT_CACHE_KEY, result);
+
+            TrailerFragment trailerFragment = new TrailerFragment();
+            trailerFragment.setArguments(bundle);
+
+            ReviewFragment reviewFragment = new ReviewFragment();
+            reviewFragment.setArguments(bundle);
+
+            adapter.addFragment(trailerFragment, getString(R.string.trailers));
+            adapter.addFragment(reviewFragment, getString(R.string.reviews));
+
+            viewPager.setAdapter(adapter);
+            tabLayout.setupWithViewPager(viewPager);
+
 
             //TODO: Here I need to get the movie id and check to see it if exist in the favorite table.
             //      Then set resource and tag accordingly
@@ -151,22 +160,6 @@ public class MovieDetailsActivity extends AppCompatActivity
                     movieFavoriteImageView.setTag(R.drawable.ic_favorite_border_black_24dp);
                 }
             });
-            setupRecyclerView();
-
-            if(savedInstanceState == null || !savedInstanceState.containsKey(RESULT_CACHE_KEY)) {
-                loadTrailers(result.getId());
-            } else {
-                com.parrish.android.portfolio.models.movie.details.Result[] cache =
-                        (com.parrish.android.portfolio.models.movie.details.Result[])
-                                savedInstanceState.getParcelableArray(RESULT_CACHE_KEY);
-                movieTrailersAdaptor.setResults(cache);
-                assert cache != null;
-                if(cache.length == 0) {
-                    trailersTextView.setVisibility(View.INVISIBLE);
-                } else {
-                    trailersTextView.setVisibility(View.VISIBLE);
-                }
-            }
 
             Animation animFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
             View view = findViewById(R.id.container);
@@ -183,89 +176,12 @@ public class MovieDetailsActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArray(RESULT_CACHE_KEY, movieTrailersAdaptor.getResults());
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == android.R.id.home) {
             NavUtils.navigateUpFromSameTask(this);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onTrailerClickListener(com.parrish.android.portfolio.models.movie.details.Result result) {
-        watchYoutubeVideo(getBaseContext(), result.getKey());
-    }
-
-    public static void watchYoutubeVideo(Context context, String id){
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + id));
-        try {
-            context.startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            context.startActivity(webIntent);
-        }
-    }
-
-    private void setupRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
-        movieTrailersAdaptor = new MovieTrailersAdaptor(this, this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(movieTrailersAdaptor);
-    }
-
-    private void loadTrailers(Integer id) {
-        MovieService movieService = ApiUtils.getMovieService();
-        movieService.getMovieTrailers(id, BuildConfig.MOVIE_API_KEY)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Observer<MovieVideoResponse>() {
-                private List<com.parrish.android.portfolio.models.movie.details.Result> resultCache;
-
-                @Override
-                public void onSubscribe(Disposable d) {
-                    movieTrailersAdaptor.setResults(null);
-                }
-
-                @Override
-                public void onNext(MovieVideoResponse movieVideoResponse) {
-                    setResultCache(movieVideoResponse);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Toast.makeText(MovieDetailsActivity.this,
-                            getString(R.string.no_internet_connection),
-                            Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onComplete() {
-                    //noinspection ToArrayCallWithZeroLengthArrayArgument
-                    movieTrailersAdaptor.setResults(resultCache
-                        .toArray(new com.parrish.android.portfolio.models.movie.details.Result[resultCache.size()]));
-                }
-
-                private void setResultCache(MovieVideoResponse movieVideoResponse) {
-                    resultCache = movieVideoResponse.getResults().stream()
-                        .filter(result -> result.getType()
-                            .equals(getString(R.string.trailer))).collect(Collectors.toList());
-
-                    if(resultCache.size() == 0) {
-                        trailersTextView.setVisibility(View.INVISIBLE);
-                    } else {
-                        trailersTextView.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
     }
 
     private String getYear(String releaseDate) {

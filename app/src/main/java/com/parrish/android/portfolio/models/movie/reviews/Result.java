@@ -1,9 +1,13 @@
 package com.parrish.android.portfolio.models.movie.reviews;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result {
+@SuppressWarnings("ALL")
+public class Result implements Parcelable {
 
     @SerializedName("author")
     @Expose
@@ -17,6 +21,15 @@ public class Result {
     @SerializedName("url")
     @Expose
     private String url;
+
+    public Result() {}
+
+    public Result(Parcel in) {
+        author = in.readString();
+        content = in.readString();
+        id = in.readString();
+        url = in.readString();
+    }
 
     public String getAuthor() {
         return author;
@@ -49,4 +62,29 @@ public class Result {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(author);
+        parcel.writeString(content);
+        parcel.writeString(id);
+        parcel.writeString(url);
+    }
+
+    public static final Creator<Result> CREATOR = new Creator<Result>() {
+        @Override
+        public Result createFromParcel(Parcel parcel) {
+            return new Result(parcel);
+        }
+
+        @Override
+        public Result[] newArray(int size) {
+            return new Result[size];
+        }
+    };
 }
