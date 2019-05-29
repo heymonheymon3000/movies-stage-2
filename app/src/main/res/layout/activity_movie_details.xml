@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.parrish.android.portfolio.activities.movie.details.MovieDetailsActivity">
 
     <TextView
@@ -96,8 +96,7 @@
         android:layout_marginStart="@dimen/trailers_tv_margin_start"
         android:layout_marginEnd="@dimen/trailers_tv_margin_end"
         app:tabGravity="fill"
-        app:tabMode="scrollable"
-        android:layout_marginTop="@dimen/trailers_tv_margin_top"
+        app:tabMode="fixed"
         style="@style/AppTheme.TabStyle"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintStart_toStartOf="parent"

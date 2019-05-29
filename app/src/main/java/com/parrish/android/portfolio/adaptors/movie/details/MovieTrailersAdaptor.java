@@ -62,6 +62,7 @@ public class MovieTrailersAdaptor extends
 
     public void setResults(Result[] results) {
         this.mResults = results;
+        this.
         notifyDataSetChanged();
     }
 

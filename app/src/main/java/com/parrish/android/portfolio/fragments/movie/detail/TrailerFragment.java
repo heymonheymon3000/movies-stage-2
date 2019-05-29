@@ -23,6 +23,7 @@ import com.parrish.android.portfolio.models.movie.details.Result;
 import com.parrish.android.portfolio.network.ApiUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import butterknife.BindView;
@@ -109,7 +110,7 @@ public class TrailerFragment extends Fragment
 
     @Override
     public void onTrailerClickListener(com.parrish.android.portfolio.models.movie.details.Result result) {
-        watchYoutubeVideo(getContext(), result.getKey());
+        watchYoutubeVideo(Objects.requireNonNull(getContext()), result.getKey());
     }
 
     private static void watchYoutubeVideo(Context context, String id){

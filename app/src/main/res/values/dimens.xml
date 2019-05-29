@@ -40,13 +40,14 @@
     <dimen name="trailer_title_text_size">12sp</dimen>
     <dimen name="trailer_divider_margin_start">4dp</dimen>
     <dimen name="trailer_divider_margin_end">4dp</dimen>
+    <dimen name="trailer_divider_margin_bottom">8dp</dimen>
 
     <!--movie_review_list_item.xml-->
     <dimen name="review_divider_margin_start">4dp</dimen>
     <dimen name="review_divider_margin_end">4dp</dimen>
     <dimen name="reviews_ll_margin_top">8dp</dimen>
     <dimen name="reviews_ll_margin_bottom">8dp</dimen>
-    <dimen name="review_author_text_size">12sp</dimen>
+    <dimen name="review_text_size">12sp</dimen>
     <dimen name="review_author_margin_start">8dp</dimen>
 
 

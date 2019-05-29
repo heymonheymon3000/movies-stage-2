@@ -19,6 +19,7 @@ import com.parrish.android.portfolio.models.movie.reviews.MovieReviewResponse;
 import com.parrish.android.portfolio.network.ApiUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,10 +52,10 @@ public class ReviewFragment extends Fragment {
     private void setupRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
-        movieReviewsAdaptor = new MovieReviewsAdaptor(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        movieReviewsAdaptor = new MovieReviewsAdaptor(Objects.requireNonNull(getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(movieReviewsAdaptor);
+        recyclerView.setLayoutManager(linearLayoutManager);
     }
 
     private void loadReviews(Integer id) {

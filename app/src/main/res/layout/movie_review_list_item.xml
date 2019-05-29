@@ -1,70 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/trailers_ll_margin_top"
+    android:layout_marginBottom="@dimen/reviews_ll_margin_bottom"
+    tools:ignore="UseCompoundDrawables">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@android:color/white"
+        android:layout_marginStart="@dimen/trailer_divider_margin_start"
+        android:layout_marginEnd="@dimen/trailer_divider_margin_end"
+        android:layout_marginBottom="@dimen/trailer_divider_margin_bottom"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/trailers_ll_margin_top"
-        android:layout_marginBottom="@dimen/reviews_ll_margin_bottom"
-        tools:ignore="UseCompoundDrawables"
-        android:descendantFocusability="blocksDescendants">
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.github.ivbaranov.mli.MaterialLetterIcon
-                android:id="@+id/letter_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:mli_letter_size="18"
-                android:layout_margin="8dp"
-                app:mli_shape_color="@android:color/white"
-                app:mli_shape_type="circle"
-                app:mli_letter_color="@android:color/black"
-                app:mli_letters_number="1"
-                app:mli_initials="false"
-                app:mli_initials_number="1" />
-
-            <TextView
-                android:id="@+id/author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:fontFamily="sans-serif"
-                android:layout_marginStart="@dimen/review_author_margin_start"
-                android:textSize="@dimen/review_author_text_size" />
-        </LinearLayout>
+        <com.github.ivbaranov.mli.MaterialLetterIcon
+            android:id="@+id/letter_icon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            app:mli_letter_size="18"
+            android:layout_margin="8dp"
+            app:mli_shape_type="circle"
+            app:mli_letter_color="@android:color/white"
+            app:mli_letters_number="1"
+            app:mli_initials="false"
+            app:mli_initials_number="1" />
 
         <TextView
-            android:id="@+id/content"
-            android:layout_margin="8dp"
+            android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:fontFamily="sans-serif"
-            android:textSize="@dimen/review_author_text_size" />
+            android:layout_marginStart="@dimen/review_author_margin_start"
+            android:textSize="@dimen/review_text_size" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_height"
-            android:background="@android:color/white"
-            android:layout_marginStart="@dimen/trailer_divider_margin_start"
-            android:layout_marginEnd="@dimen/trailer_divider_margin_end" />
-    </LinearLayout>
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@android:color/white"
+        android:fontFamily="sans-serif"
+        android:textSize="@dimen/review_text_size"
+        android:maxLines="3" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/read_more"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondaryColor"
+        android:fontFamily="sans-serif"
+        android:textSize="@dimen/review_text_size"
+        android:textColorLink="@color/colorPrimary"/>
+</LinearLayout>
