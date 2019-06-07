@@ -1,12 +1,22 @@
 package com.parrish.android.portfolio.activities.movie.details;
 
+import android.annotation.SuppressLint;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -18,6 +28,8 @@ import android.widget.Toast;
 
 import com.parrish.android.portfolio.BuildConfig;
 import com.parrish.android.portfolio.adaptors.movie.details.TabAdapter;
+import com.parrish.android.portfolio.db.FavoriteMovieContract;
+import com.parrish.android.portfolio.db.FavoriteMovieLoader;
 import com.parrish.android.portfolio.fragments.movie.detail.ReviewFragment;
 import com.parrish.android.portfolio.fragments.movie.detail.TrailerFragment;
 import com.squareup.picasso.Callback;
@@ -37,9 +49,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MovieDetailsActivity extends AppCompatActivity {
+public class MovieDetailsActivity extends AppCompatActivity
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String TAG = MovieDetailsActivity.class.getSimpleName();
+    private Cursor mCursor;
 
     @BindView(R.id.movie_details_title)
     public TextView movieDetailsTitleTextView;
@@ -68,10 +82,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @BindView(R.id.viewPager)
     public ViewPager viewPager;
 
-    private TabAdapter adapter;
-
     public final static String RESULT_CACHE_KEY = "RESULT_CACHE_KEY";
-
+    public static Result result;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +94,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(intent.hasExtra(Intent.EXTRA_TEXT)) {
-            Result result = intent.getParcelableExtra(Intent.EXTRA_TEXT);
+            result = intent.getParcelableExtra(Intent.EXTRA_TEXT);
 
             movieDetailsTitleTextView.setText(result.getTitle());
             movieThumbnailImageView.setTransitionName(result.getTitle());
@@ -129,7 +142,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             movieRating.setText(getVoteAverage(result.getVoteAverage()));
             movieDescription.setText(result.getOverview());
 
-            adapter = new TabAdapter(getSupportFragmentManager());
+            TabAdapter adapter = new TabAdapter(getSupportFragmentManager());
             Bundle bundle = new Bundle();
             bundle.putParcelable(RESULT_CACHE_KEY, result);
 
@@ -146,16 +159,27 @@ public class MovieDetailsActivity extends AppCompatActivity {
             tabLayout.setupWithViewPager(viewPager);
 
 
-            //TODO: Here I need to get the movie id and check to see it if exist in the favorite table.
-            //      Then set resource and tag accordingly
-            movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-            movieFavoriteImageView.setTag(R.drawable.ic_favorite_border_black_24dp);
+
+
+//            //TODO: Here I need to get the movie id and check to see it if exist in the favorite table.
+//            //      Then set resource and tag accordingly
+//            movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+//            movieFavoriteImageView.setTag(R.drawable.ic_favorite_border_black_24dp);
+
+
+            LoaderManager.getInstance(this).initLoader(0, null, this);
 
             movieFavoriteImageView.setOnClickListener(v -> {
-                if((int)((movieFavoriteImageView.getTag())) == R.drawable.ic_favorite_border_black_24dp) {
+                if ((int)((movieFavoriteImageView.getTag())) == R.drawable.ic_favorite_border_black_24dp) {
+                    if(!isFavoriteStoredAlready(String.valueOf(result.getId()))) {
+                        addNewFavoriteMovie(String.valueOf(result.getId()));
+                    }
+
                     movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_black_24dp);
                     movieFavoriteImageView.setTag(R.drawable.ic_favorite_black_24dp);
                 } else {
+                    deleteFavoriteMovie(String.valueOf(result.getId()));
+
                     movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                     movieFavoriteImageView.setTag(R.drawable.ic_favorite_border_black_24dp);
                 }
@@ -224,5 +248,72 @@ public class MovieDetailsActivity extends AppCompatActivity {
         return voteAverage +
                 "/" +
                 10;
+    }
+
+    private boolean isFavoriteStoredAlready(String id) {
+        Uri uri = FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(id).build();
+
+        @SuppressLint("Recycle")
+        Cursor cursor = getContentResolver().query(
+            uri,
+            null,
+            null,
+            null,
+            null);
+
+        assert cursor != null;
+        return ( cursor.getCount() > 0 ) ;
+    }
+
+    private void addNewFavoriteMovie(String id) {
+        ContentValues cv = new ContentValues();
+        cv.put(FavoriteMovieContract.FavoriteMovieEntry.COLUMN_ID, id);
+
+        Uri uri =
+                getContentResolver().insert(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, cv);
+        if(uri != null) {
+            Toast.makeText(MovieDetailsActivity.this,
+                    "Added favorite movie.\n"+ uri.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void deleteFavoriteMovie(String id) {
+        Uri uri =
+                ContentUris.withAppendedId(FavoriteMovieContract.FavoriteMovieEntry.CONTENT_URI, Long.valueOf(id));
+        int count =
+                getContentResolver().delete(uri, null, null);
+        if(count > 0) {
+            Toast.makeText(MovieDetailsActivity.this,
+                    "Deleted favorite movie.\n"+ uri.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
+        final FavoriteMovieLoader favoriteMovieLoader =
+                FavoriteMovieLoader.favoriteMovieByMovieId(
+                        this, result.getId());
+        return favoriteMovieLoader;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        mCursor = cursor;
+        mCursor.moveToFirst();
+
+        if(mCursor.getCount() == 0) {
+            movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+            movieFavoriteImageView.setTag(R.drawable.ic_favorite_border_black_24dp);
+        } else {
+            movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_black_24dp);
+            movieFavoriteImageView.setTag(R.drawable.ic_favorite_black_24dp);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        mCursor = null;
     }
 }

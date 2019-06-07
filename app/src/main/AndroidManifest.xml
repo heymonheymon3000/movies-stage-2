@@ -42,6 +42,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.movie.MovieActivity" />
         </activity>
+
+        <provider
+            android:authorities="com.parrish.android.portfolio.movies"
+            android:name="com.parrish.android.portfolio.db.FavoriteContentProvider"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
