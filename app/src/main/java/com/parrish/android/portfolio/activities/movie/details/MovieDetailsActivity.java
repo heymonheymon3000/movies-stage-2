@@ -16,7 +16,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -157,15 +156,6 @@ public class MovieDetailsActivity extends AppCompatActivity
 
             viewPager.setAdapter(adapter);
             tabLayout.setupWithViewPager(viewPager);
-
-
-
-
-//            //TODO: Here I need to get the movie id and check to see it if exist in the favorite table.
-//            //      Then set resource and tag accordingly
-//            movieFavoriteImageView.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-//            movieFavoriteImageView.setTag(R.drawable.ic_favorite_border_black_24dp);
-
 
             LoaderManager.getInstance(this).initLoader(0, null, this);
 

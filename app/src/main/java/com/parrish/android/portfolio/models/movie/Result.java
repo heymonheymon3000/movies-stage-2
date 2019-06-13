@@ -191,9 +191,9 @@ public class Result implements Parcelable {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(genreIds).append(originalLanguage)
-                .append(adult).append(backdropPath).append(voteCount).append(id)
-                .append(title).append(releaseDate).append(overview).append(posterPath)
-                .append(originalTitle).append(voteAverage).append(video).append(popularity).toHashCode();
+            .append(adult).append(backdropPath).append(voteCount).append(id)
+            .append(title).append(releaseDate).append(overview).append(posterPath)
+            .append(originalTitle).append(voteAverage).append(video).append(popularity).toHashCode();
     }
 
     @Override
@@ -206,12 +206,12 @@ public class Result implements Parcelable {
         }
         Result rhs = ((Result) other);
         return new EqualsBuilder().append(genreIds, rhs.genreIds)
-                .append(originalLanguage, rhs.originalLanguage).append(adult, rhs.adult)
-                .append(backdropPath, rhs.backdropPath).append(voteCount, rhs.voteCount)
-                .append(id, rhs.id).append(title, rhs.title).append(releaseDate, rhs.releaseDate)
-                .append(overview, rhs.overview).append(posterPath, rhs.posterPath)
-                .append(originalTitle, rhs.originalTitle).append(voteAverage, rhs.voteAverage)
-                .append(video, rhs.video).append(popularity, rhs.popularity).isEquals();
+            .append(originalLanguage, rhs.originalLanguage).append(adult, rhs.adult)
+            .append(backdropPath, rhs.backdropPath).append(voteCount, rhs.voteCount)
+            .append(id, rhs.id).append(title, rhs.title).append(releaseDate, rhs.releaseDate)
+            .append(overview, rhs.overview).append(posterPath, rhs.posterPath)
+            .append(originalTitle, rhs.originalTitle).append(voteAverage, rhs.voteAverage)
+            .append(video, rhs.video).append(popularity, rhs.popularity).isEquals();
     }
 
     @Override
