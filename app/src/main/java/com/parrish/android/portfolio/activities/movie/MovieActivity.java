@@ -53,6 +53,7 @@ public class MovieActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener,
         MovieAdaptor.MovieClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
+
     @SuppressWarnings("unused")
     private final static String TAG = MovieActivity.class.getSimpleName();
     private Cursor mCursor;
@@ -75,26 +76,19 @@ public class MovieActivity extends AppCompatActivity
         setupSharedPreferences();
         setupRecyclerView();
 
-
         if(savedInstanceState == null || !savedInstanceState.containsKey(RESULT_CACHE_KEY)) {
             SharedPreferences sharedPreferences =
                     PreferenceManager.getDefaultSharedPreferences(this);
             sortOrder = sharedPreferences.getString(getString(R.string.pref_sort_order_key), getString(R.string.pref_sort_order_default));
             if(sortOrder.equals(getString(R.string.pref_sort_order_popular_value))) {
-
                 loadMovies();
             } else if(sortOrder.equals(getString(R.string.pref_sort_order_top_rated_value))) {
-
                 loadMovies();
             } else if(sortOrder.equals(getString(R.string.pref_sort_order_favorites_value))) {
-
                 LoaderManager.getInstance(this).initLoader(0, null, this);
             }
-            Log.i(TAG, "sort order 1=> " + sortOrder);
-
         } else {
             sortOrder = savedInstanceState.getString(SORT_ORDER_KEY);
-            Log.i(TAG, "sort order 2=> " + sortOrder);
             loadMoviesFromCache(savedInstanceState);
         }
     }
@@ -121,18 +115,11 @@ public class MovieActivity extends AppCompatActivity
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals(getString(R.string.pref_sort_order_key))) {
             sortOrder = sharedPreferences.getString(getString(R.string.pref_sort_order_key), getString(R.string.pref_sort_order_default));
-            Log.i(TAG, "sort order => " + sortOrder);
-
             if(sortOrder.equals(getString(R.string.pref_sort_order_popular_value))) {
-                Log.i(TAG, "Execute popular");
-
                 loadMovies();
             } else if(sortOrder.equals(getString(R.string.pref_sort_order_top_rated_value))) {
-                Log.i(TAG, "Execute top rated");
-
                 loadMovies();
             } else if(sortOrder.equals(getString(R.string.pref_sort_order_favorites_value))) {
-                Log.i(TAG, "Execute favorites");
                 LoaderManager.getInstance(this).restartLoader(0, null, this);
             }
         }
@@ -169,7 +156,6 @@ public class MovieActivity extends AppCompatActivity
 
     private void loadSortOrderFromSharedPreferences(SharedPreferences sharedPreferences) {
         sortOrder = sharedPreferences.getString(getString(R.string.pref_sort_order_key), getString(R.string.pref_sort_order_default));
-        Log.i(TAG, "sort order => " + sortOrder);
     }
 
     private void loadMovies() {
@@ -221,7 +207,6 @@ public class MovieActivity extends AppCompatActivity
                         savedInstanceState.getParcelableArray(RESULT_CACHE_KEY));
                 sortOrder = savedInstanceState.getString(SORT_ORDER_KEY);
 
-                Log.i(TAG, "sort order 4=> " + sortOrder);
                 if(sortOrder != null) {
                     if(sortOrder.equals(getString(R.string.pref_sort_order_popular_value))) {
                         setTitle(getString(R.string.pref_sort_order_popular_label));
@@ -335,59 +320,17 @@ public class MovieActivity extends AppCompatActivity
                     result.setOverview(movieDetailsResponse.getOverview());
                     result.setReleaseDate(movieDetailsResponse.getReleaseDate());
 
-
-
-
-
                     Log.i(TAG, "TITLE -> " + movieDetailsResponse.getTitle());
 
                     return result;
                 }
             });
-
-
         }
-
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        movieAdaptor.setResults(null);
         mCursor = null;
     }
 }
-
-
-//    List<Result> results = new ArrayList<>();
-//
-//    @Override
-//    public void onSubscribe(Disposable d) {}
-//
-//    @Override
-//    public void onNext(MovieResponse movieResponse) {
-//        results = movieResponse.getResults();
-//    }
-//
-//    @Override
-//    public void onError(Throwable e) {
-//        Toast.makeText(MovieActivity.this,
-//                getString(R.string.no_internet_connection),
-//                Toast.LENGTH_LONG).show();
-//    }
-//
-//    @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
-//    @Override
-//    public void onComplete() {
-//        movieAdaptor.setResults(results.toArray(new Result[results.size()]));
-//        setTitle(getTitle());
-//    }
-//
-//    private String getTitle() {
-//        if(sortOrder.equals(getString(R.string.pref_sort_order_most_popular_value))) {
-//            return getString(R.string.pref_sort_order_most_popular_label);
-//        } else if(sortOrder.equals(getString(R.string.pref_sort_order_top_rated_value))) {
-//            return getString(R.string.pref_sort_order_top_rated_label);
-//        } else {
-//            return getString(R.string.pref_sort_order_favorite_label);
-//        }
-//    }
-//});
